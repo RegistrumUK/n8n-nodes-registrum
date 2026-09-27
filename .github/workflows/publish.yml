@@ -92,8 +92,17 @@ jobs:
         #   npm uses the OIDC exchange instead.
         # Option B (token): set NPM_TOKEN in repo secrets — it is written to
         #   .npmrc here before publishing.
+        #
+        # The `if` is load-bearing and differs from n8n's shipped template, which
+        # uses `[ -n "$NPM_TOKEN" ] && npm config set ...`. GitHub Actions runs
+        # each `run` block with `bash -e`, so on the OIDC path - where NPM_TOKEN
+        # is deliberately unset - that test exits 1 and kills the step before
+        # `npm run release` is ever reached. Publishing would fail with nothing
+        # in the log that looks like a cause.
         run: |
-          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          if [ -n "$NPM_TOKEN" ]; then
+            npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          fi
           npm run release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
