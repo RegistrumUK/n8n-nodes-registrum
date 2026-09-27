@@ -1,0 +1,56 @@
+{
+	"name": "n8n-nodes-registrum",
+	"version": "0.1.0",
+	"description": "UK Companies House company data in n8n: profiles, directors, PSC ownership chains, parsed financials and ECCTA identity-verification status",
+	"license": "MIT",
+	"homepage": "https://registrum.co.uk",
+	"keywords": [
+		"n8n-community-node-package",
+		"companies-house",
+		"uk-company-data",
+		"kyb",
+		"eccta"
+	],
+	"author": {
+		"name": "Eugene Merwe-Chartier",
+		"email": "support@registrum.co.uk"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/RegistrumUK/n8n-nodes-registrum.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"test": "vitest run",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/RegistrumApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Registrum/Registrum.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "^0.49.1",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2",
+		"vitest": "^4.1.11"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
