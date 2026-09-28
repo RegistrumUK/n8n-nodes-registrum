@@ -1,0 +1,45 @@
+# Runs n8n's own community-package scanner against the PUBLISHED package.
+#
+# n8n requires `npx @n8n/scan-community-package <pkg>` to pass before a node is
+# accepted for verification. It must run on Linux: on Windows the scanner's
+# source-extraction step mangles the temp path and fails with a tar error that
+# reads like a broken package but is the tool's own path handling.
+#
+# Dispatch it by hand before submitting a release for verification, and on a
+# schedule so a change on n8n's side surfaces here rather than in a rejection.
+name: Scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Published version to scan (e.g. 0.1.1)'
+        required: false
+        default: ''
+  schedule:
+    # Mondays, 08:00 UTC.
+    - cron: '0 8 * * 1'
+
+jobs:
+  scan:
+    name: n8n community package scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Resolve version
+        id: version
+        run: |
+          if [ -n "${{ inputs.version }}" ]; then
+            echo "spec=n8n-nodes-registrum@${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "spec=n8n-nodes-registrum" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Scan
+        run: npx --yes @n8n/scan-community-package ${{ steps.version.outputs.spec }}
