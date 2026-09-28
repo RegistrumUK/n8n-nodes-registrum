@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-registrum",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "UK Companies House company data in n8n: profiles, directors, PSC ownership chains, parsed financials and ECCTA identity-verification status",
 	"license": "MIT",
 	"homepage": "https://registrum.co.uk",
