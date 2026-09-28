@@ -110,7 +110,7 @@ describe('node description', () => {
 describe('credential', () => {
 	it('sends the key in the header the API actually reads', () => {
 		expect(credential.authenticate.properties.headers).toEqual({
-			'X-API-Key': '={{$credentials.apiKey}}',
+			'X-API-Key': '={{$credentials.authMode === "email" ? $credentials.trialKey : $credentials.apiKey}}',
 		});
 	});
 

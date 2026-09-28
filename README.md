@@ -21,11 +21,17 @@ npm install n8n-nodes-registrum
 
 ## Credentials
 
-You need a Registrum API key. The free plan needs no card:
-[registrum.co.uk](https://registrum.co.uk).
+Create a **Registrum API** credential and pick how you want in:
 
-In n8n, create a **Registrum API** credential and paste the key. n8n will test it against
-`/v1/usage`, which checks the key without spending one of your monthly company lookups.
+- **Email (14-day free trial, no key needed).** Type your email and save. We send you a
+  confirmation link; click it and your workflows work straight away - you never copy a key.
+  Every operation is included for 14 days, then the free plan applies. Each save sends a fresh
+  link, so if you lose the email, just save the credential again.
+- **API Key.** Paste a key from [registrum.co.uk](https://registrum.co.uk). The free plan needs
+  no card.
+
+n8n tests the credential against `/v1/usage`, which checks it without spending one of your
+company lookups.
 
 ## Operations
 
