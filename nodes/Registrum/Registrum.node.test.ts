@@ -40,6 +40,14 @@ describe('package manifest', () => {
 		expect(Object.keys(pkg.peerDependencies)).toEqual(['n8n-workflow']);
 	});
 
+	it('publishes with public access, or provenance cannot attach', () => {
+		// The 0.1.0 publish failed on exactly this: "Can't generate provenance for
+		// new or private package, you must set `access` to public." Provenance is
+		// what n8n verification requires, so the publish is worthless without it.
+		expect(pkg.publishConfig.access).toBe('public');
+		expect(pkg.publishConfig.provenance).toBe(true);
+	});
+
 	it('carries the metadata verification requires', () => {
 		expect(pkg.license).toBe('MIT');
 		expect(pkg.files).toContain('dist');
