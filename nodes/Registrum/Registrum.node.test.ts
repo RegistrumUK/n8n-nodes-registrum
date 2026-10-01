@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import pkg from '../../package.json';
+import tsconfig from '../../tsconfig.json';
 import { Registrum } from './Registrum.node';
 import { RegistrumApi } from '../../credentials/RegistrumApi.credentials';
 
@@ -124,5 +125,17 @@ describe('credential', () => {
 		// a company lookup would spend one of the user's monthly calls, and one
 		// upstream Companies House call, every time they press Save.
 		expect(credential.test.request.url).toBe('/v1/usage');
+	});
+});
+
+describe('build config', () => {
+	it('never builds incrementally, which ships an empty package on a second build', () => {
+		// `n8n-node build` empties dist/ and then runs tsc. With `incremental`, tsc
+		// trusts its .tsbuildinfo cache, decides nothing changed, and emits no
+		// JavaScript - dist/ ends up holding only the SVGs and the build still
+		// reports success. Found 2026-10-01 packing 0.2.0 for a live test.
+		const options = tsconfig.compilerOptions as Record<string, unknown>;
+		expect(options.incremental ?? false).toBe(false);
+		expect(options.tsBuildInfoFile).toBeUndefined();
 	});
 });
