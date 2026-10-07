@@ -1,4 +1,4 @@
-## Unreleased (0.2.0 - publish only after 0.1.1 is listed by n8n)
+## 0.2.0
 
 - Credential: new **Email (60-day free trial)** access mode. The email is exchanged for a trial
   key in the background (n8n `preAuthentication`) and stored encrypted; it starts answering once
