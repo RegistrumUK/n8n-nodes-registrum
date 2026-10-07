@@ -9,6 +9,8 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
+import { TRIAL_DAYS } from './trial';
+
 export class RegistrumApi implements ICredentialType {
 	name = 'registrumApi';
 
@@ -25,7 +27,7 @@ export class RegistrumApi implements ICredentialType {
 			type: 'options',
 			options: [
 				{
-					name: 'Email (14-Day Free Trial, No Key Needed)',
+					name: `Email (${TRIAL_DAYS}-Day Free Trial, No Key Needed)`,
 					value: 'email',
 					description: 'Enter your email, click the link we send, and you are set',
 				},
@@ -44,7 +46,7 @@ export class RegistrumApi implements ICredentialType {
 			default: '',
 			displayOptions: { show: { authMode: ['email'] } },
 			description:
-				'We email you a confirmation link. Every endpoint is included for 14 days, then the free plan applies. Each save sends a fresh link.',
+				`We email you a confirmation link. Every endpoint is included for ${TRIAL_DAYS} days, then the key stays free for light use. Each save sends a fresh link.`,
 		},
 		{
 			displayName: 'API Key',

@@ -23,10 +23,11 @@ npm install n8n-nodes-registrum
 
 Create a **Registrum API** credential and pick how you want in:
 
-- **Email (14-day free trial, no key needed).** Type your email and save. We send you a
+- **Email (60-day free trial, no key needed).** Type your email and save. We send you a
   confirmation link; click it and your workflows work straight away - you never copy a key.
-  Every operation is included for 14 days, then the free plan applies. Each save sends a fresh
-  link, so if you lose the email, just save the credential again.
+  Every operation is included for 60 days with no monthly cap and no card, then the key stays
+  free for light use. Each save sends a fresh link, so if you lose the email, just save the
+  credential again. Live limits and prices: https://api.registrum.co.uk/v1/plans
 - **API Key.** Paste a key from [registrum.co.uk](https://registrum.co.uk). The free plan needs
   no card.
 
