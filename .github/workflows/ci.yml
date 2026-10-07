@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - master
 
 # Cancel in-progress runs for the same branch/PR to avoid wasting CI minutes.
 concurrency:
@@ -32,3 +32,26 @@ jobs:
 
       - name: Run build
         run: 'npm run build'
+
+      - name: Run tests
+        run: 'npm test'
+
+      # A red default branch is invisible unless something says so (CH-Api#174).
+      # Secrets cannot be read in `if:`, so the guard is in the script; no secrets
+      # -> warn, do not fail.
+      - name: Alert Telegram that master is red
+        if: failure() && github.ref == 'refs/heads/master'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CRITICAL_CHAT_ID: ${{ secrets.TELEGRAM_CRITICAL_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_SUBJECT: ${{ github.event.head_commit.message }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CRITICAL_CHAT_ID" ]; then
+            echo "::warning::TELEGRAM_BOT_TOKEN / TELEGRAM_CRITICAL_CHAT_ID not set; cannot alert"
+            exit 0
+          fi
+          curl -sS --fail-with-body -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CRITICAL_CHAT_ID}" \
+            --data-urlencode "text=n8n-nodes-registrum: CI FAILED on master. ${COMMIT_SUBJECT%%$'\n'*}
+          ${RUN_URL}" > /dev/null
